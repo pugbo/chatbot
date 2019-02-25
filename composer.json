@@ -1,7 +1,9 @@
 {
-    "name": "botman/studio",
-    "description": "BotMan Chatbot framework.",
+    "name": "pugbo/chatbot",
+    "description": "BotMan Chatbot based on Laravel Framework.",
     "keywords": [
+        "pugbo",
+        "php",
         "botman",
         "chatbot",
         "framework",
