@@ -9,6 +9,7 @@
 
 ## development
 
+*  Ricordati di integrare PUGBO_MEETUP_KEY nel file .env
 * `php artisan serve -vvv`
 
 ## Note
