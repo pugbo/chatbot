@@ -3,32 +3,41 @@
 namespace App\Pugbo;
 
 use Illuminate\Support\Facades\Log;
+use DMS\Service\Meetup\MeetupKeyAuthClient;
 
 Class Pugbot
 {
 
     public function handlePugbo($bot)
     {
-        $bot->reply('Pugbo!');
+        $bot->reply('è il PHP User Group di Bologna!');
         Log::debug('lol va?');
     }
 
     public function handleProssimoMeetup($bot)
     {
-        $meetup = serialize($this->_getMeetup());
+        $meetup = $this->_getMeetup();
         $bot->reply('Ecco il prossimo meetup!');
-        $bot->reply($meetup);
+        $bot->reply(sprintf(
+            '%s, sono rimasti %s posti!',
+            $meetup['name'],
+            $meetup['rsvp_limit'] - $meetup['yes_rsvp_count'],
+        ));
+        $bot->reply($meetup['link']);
     }
 
     private function _getMeetup()
     {
-        $key = env('MEETUP_API_KEY');
-        Log::debug($key);
-        $mc = new MeetupKeyAuthConnection($key);
-        $me = new MeetupEvents($mc);
-        $events = $me->getEvents(['group_urlname' => 'pugbo-bologna']);
+        $out = 'vuoto';
+        $key = env('PUGBO_MEETUP_KEY');
+        $mc = MeetupKeyAuthClient::factory([
+            'key' => $key,
+        ]);
+        $events = $mc->getGroupEvents(['urlname' => 'pugbo-grusp']);
 
-        return $events;
+        Log::debug($events[0]);
+
+        return $events[0];
     }
 
 }
